@@ -21,3 +21,4 @@ public class ScApplication {
 		System.out.println(encoder.encode("raj123"));
 	}
 }
+
