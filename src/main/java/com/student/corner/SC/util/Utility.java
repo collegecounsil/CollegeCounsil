@@ -2,6 +2,12 @@ package com.student.corner.SC.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.student.corner.SC.util.Constants.KeyType;
 
 /**
  * Contains All Application utility 
@@ -9,6 +15,7 @@ import java.util.Date;
  * @author Raj
  * @since V1.0.0_14012017
  */
+@Service("utility")
 public class Utility {
 	
 	//Date Formats to be used in Application
@@ -39,6 +46,17 @@ public class Utility {
 		current = current.replaceAll("\\-", "_");
 		
 		return "_"+current;
+	}
+
+	public String encodePassword(String rawPassword) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encryptedString = passwordEncoder.encode(rawPassword);
+		return encryptedString;
+	}
+	
+	// This method is used to get generate unique key for Student, Teacher, Admin
+	public String genrateKey(KeyType key) {
+		return key.getValue() + "-" + UUID.randomUUID().toString();
 	}
 
 }

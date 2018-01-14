@@ -1,16 +1,13 @@
 package com.student.corner.SC.service.impl;
-import java.util.Arrays;
-import java.util.HashSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.student.corner.SC.model.Role;
 import com.student.corner.SC.model.User;
-import com.student.corner.SC.repository.RoleRepository;
 import com.student.corner.SC.repository.UserRepository;
 import com.student.corner.SC.service.UserService;
+import com.student.corner.SC.util.Constants.KeyType;
+import com.student.corner.SC.util.Utility;
 
 /**
  * 
@@ -23,22 +20,24 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
+    
 	@Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private Utility utility;
+    
+	@Override
+	@Transactional(value = "transactionManager")
+	public void save(User user) {
+		if (user.getId() == null) {
+			// New user creation
+			user.setPassword(utility.encodePassword(user.getPassword()));
+		}
+		user.setUserKey(utility.genrateKey(KeyType.STUDENT_KEY));
+		userRepository.save(user);
+	}
 	
 	@Override
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 
-	@Override
-	public void saveUser(User user) {
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(1);
-        Role userRole = roleRepository.findByRole("ADMIN");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-		userRepository.save(user);
-	}
 }

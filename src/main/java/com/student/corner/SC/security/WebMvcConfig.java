@@ -1,4 +1,4 @@
-package com.student.corner.SC.configuration;
+package com.student.corner.SC.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

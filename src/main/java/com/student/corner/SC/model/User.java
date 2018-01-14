@@ -1,4 +1,6 @@
 package com.student.corner.SC.model;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,99 +12,209 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.Transient;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
+ * User Domain represents a user for application.
  * 
  * @author Raj
  * @since V1.0.0_14012017
  */
-
 @Entity
-@Table(name = "user")
+@Table(name="user_info")
 public class User {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
-	private int id;
+	private Long id;
 	
-	@Column(name = "email")
-	private String email;
-	
+
+	//Contains password for the user to login
 	@Column(name = "password")
-	@Transient
+	@NotNull
+	@NotBlank
 	private String password;
 	
+	//Contains first name of the user 
 	@Column(name = "first_name")
 	private String firstName;
-	
+
+	//Contains last name of the user
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@Column(name = "active")
-	private int active;
+	//Contains email address of the user
+	@Email
+	@Column(name = "email")
+	private String email;
 	
+	//Stores the phone number of the user
+  	@Column(name= "phone")
+	private String phone;
+	
+	//Contains unique Key for a User. Used in Job Seeker to Open Job Seeker Profile with direct link of URL
+	@Column(length = 1024, nullable = true)
+	private String userKey;
+	
+	//Contains when user last Logged-in to the application. Updated when user logs in.
+	@Column(name= "last_login",nullable = true)
+	private Date lastLogin;
+	
+	//Represents weather user is enabled or not
+	@Column(name = "active")
+	private boolean active;
+	
+	//Represents weather user account is not expired
+	private boolean accountNonExpired = true;
+	
+	
+	//Represents weather user account is not locked
+	private boolean accountNonLocked = true;
+	
+	//User can have multiple Roles
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+	
+	
+	//User a.k.a Job Seekers has many API Connections
+	@OneToMany(mappedBy = "user")
+	private List<ApiConnection> apiConnections;
 
-	public int getId() {
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
+
 
 	public String getPassword() {
 		return password;
 	}
 
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getfirstName() {
+
+	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setfirstName(String firstName) {
+
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 
 	public String getLastName() {
 		return lastName;
 	}
 
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
 
 	public String getEmail() {
 		return email;
 	}
 
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public int getActive() {
+
+	public String getPhone() {
+		return phone;
+	}
+
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+	public String getUserKey() {
+		return userKey;
+	}
+
+
+	public void setUserKey(String userKey) {
+		this.userKey = userKey;
+	}
+
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(int active) {
+
+	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+
+	public boolean isAccountNonExpired() {
+		return accountNonExpired;
+	}
+
+
+	public void setAccountNonExpired(boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
+
+
+	public boolean isAccountNonLocked() {
+		return accountNonLocked;
+	}
+
+
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
 
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
+
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+
+	public List<ApiConnection> getApiConnections() {
+		return apiConnections;
+	}
+
+
+	public void setApiConnections(List<ApiConnection> apiConnections) {
+		this.apiConnections = apiConnections;
 	}
 
 }

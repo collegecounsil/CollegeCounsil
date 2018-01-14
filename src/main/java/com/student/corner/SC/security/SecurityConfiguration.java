@@ -1,4 +1,4 @@
-package com.student.corner.SC.configuration;
+package com.student.corner.SC.security;
 
 import javax.sql.DataSource;
 
