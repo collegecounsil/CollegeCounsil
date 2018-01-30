@@ -21,7 +21,7 @@ import com.student.corner.SC.bean.Car;
 @RestController
 public class testController {
 
-	@RequestMapping(value={"/", "/carList"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/carList"}, method = RequestMethod.GET)
 	public List<Car> carList(){
 		return Arrays.asList(
 				new Car(1, "Audi"),
