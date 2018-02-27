@@ -1,16 +1,14 @@
 package com.student.corner.SC.model;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -51,21 +49,35 @@ public class User {
 	
 	//Contains email address of the user
 	@Email
-	@Column(name = "email")
+	@Column(unique = true,name = "email")
 	private String email;
 	
 	//Stores the phone number of the user
-  	@Column(name= "phone")
+  	@Column(unique = true,name= "phone")
 	private String phone;
 	
 	//Contains unique Key for a User. Used in Job Seeker to Open Job Seeker Profile with direct link of URL
-	@Column(length = 1024, nullable = true)
+	@Column(unique = true,length = 1024, nullable = true)
 	private String userKey;
 	
 	//Contains when user last Logged-in to the application. Updated when user logs in.
 	@Column(name= "last_login",nullable = true)
 	private Date lastLogin;
 	
+	//Contains when user last Password Reset to the application. Updated when user logs in.
+	@Column(name= "last_Password_Reset",nullable = false)
+	private Date lastPasswordResetDate;
+	
+	public Date getLastPasswordResetDate() {
+		return lastPasswordResetDate;
+	}
+
+
+	public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+		this.lastPasswordResetDate = lastPasswordResetDate;
+	}
+
+
 	//Represents weather user is enabled or not
 	@Column(name = "active")
 	private boolean active;
@@ -78,9 +90,8 @@ public class User {
 	private boolean accountNonLocked = true;
 	
 	//User can have multiple Roles
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Collection<Role> roles;
 	
 	
 	//User a.k.a Job Seekers has many API Connections
@@ -198,16 +209,6 @@ public class User {
 	}
 
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-
 	public List<ApiConnection> getApiConnections() {
 		return apiConnections;
 	}
@@ -215,6 +216,16 @@ public class User {
 
 	public void setApiConnections(List<ApiConnection> apiConnections) {
 		this.apiConnections = apiConnections;
+	}
+
+
+	public Collection<Role> getRoles() {
+		return roles;
+	}
+
+
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
 	}
 
 }

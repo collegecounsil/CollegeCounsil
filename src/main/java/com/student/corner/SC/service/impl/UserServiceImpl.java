@@ -27,10 +27,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional(value = "transactionManager")
 	public void save(User user) {
-		if (user.getId() == null) {
-			// New user creation
-			user.setPassword(utility.encodePassword(user.getPassword()));
-		}
+//		if (user.getId() == null) {
+//			// New user creation
+//			user.setPassword(utility.encodePassword(user.getPassword()));
+//		}
 		user.setUserKey(utility.genrateKey(KeyType.STUDENT_KEY));
 		userRepository.save(user);
 	}

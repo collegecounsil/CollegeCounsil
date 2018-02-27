@@ -1,17 +1,16 @@
 package com.student.corner.SC.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.student.corner.SC.model.Role;
+import com.student.corner.SC.util.Constants.RoleMaster;
 
 /**
+ * Repository Layer for Role
  * 
- * @author Raj
- * @since V1.0.0_14012017
+ * @author RM
+ * @since V1.0.0_01102017
  */
-@Repository("roleRepository")
-public interface RoleRepository extends JpaRepository<Role, Integer>{
-	Role findByRole(String role);
-
+public interface RoleRepository extends JpaRepository<Role, Long> {
+	Role findByName(RoleMaster role);
 }

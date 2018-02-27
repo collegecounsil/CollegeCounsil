@@ -15,10 +15,6 @@ public class ScApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScApplication.class, args);
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		// [TODO] Remove it later
-		System.out.println("password");
-		System.out.println(encoder.encode("raj123"));
 	}
 }
 
