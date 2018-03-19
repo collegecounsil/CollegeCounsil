@@ -16,13 +16,6 @@ import javax.validation.constraints.NotNull;
 import com.student.corner.SC.util.Constants.ApiConnectionStatus;
 import com.student.corner.SC.util.Constants.ApiProvider;
 
-
-/**
- * Domain contains all the API Connections
- * 
- * @author Raj
- * @since V1.0.0_14012017
- */
 @Entity
 @Table(name="apiConnection")
 public class ApiConnection {

@@ -1,4 +1,5 @@
 package com.student.corner.SC.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,9 +10,7 @@ import com.student.corner.SC.config.jwt.JwtUserFactory;
 import com.student.corner.SC.model.User;
 import com.student.corner.SC.repository.UserRepository;
 
-/**
- * Created by stephan on 20.03.16.
- */
+
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 

@@ -1,4 +1,5 @@
 package com.student.corner.SC.config.jwt;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,10 +30,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Value("${jwt.header}")
     private String tokenHeader;
+    
+
+    @Value("${jwt.cookie}")
+    private String AUTH_COOKIE;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String authToken = request.getHeader(this.tokenHeader);
+        String authToken = getToken(request);
+        
         // authToken.startsWith("Bearer ")
         // String authToken = header.substring(7);
 
@@ -60,5 +67,46 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         chain.doFilter(request, response);
+    }
+    
+    public String getToken( HttpServletRequest request ) {
+        /**
+         *  Getting the token from Cookie store
+         */
+        Cookie authCookie = getCookieValueByName( request, AUTH_COOKIE );
+        if ( authCookie != null ) {
+            return authCookie.getValue();
+        }
+        /**
+         *  Getting the token from Authentication header
+         *  e.g Bearer your_token
+         */
+        String authHeader = request.getHeader(tokenHeader);
+        if ( authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+
+        return null;
+    }
+    
+    /**
+     * Find a specific HTTP cookie in a request.
+     *
+     * @param request
+     *            The HTTP request object.
+     * @param name
+     *            The cookie name to look for.
+     * @return The cookie, or <code>null</code> if not found.
+     */
+    public Cookie getCookieValueByName(HttpServletRequest request, String name) {
+        if (request.getCookies() == null) {
+            return null;
+        }
+        for (int i = 0; i < request.getCookies().length; i++) {
+            if (request.getCookies()[i].getName().equals(name)) {
+                return request.getCookies()[i];
+            }
+        }
+        return null;
     }
 }

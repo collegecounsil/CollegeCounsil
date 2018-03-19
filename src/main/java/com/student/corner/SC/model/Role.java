@@ -14,15 +14,6 @@ import javax.persistence.Table;
 
 import com.student.corner.SC.util.Constants.RoleMaster;
 
-
-
-/**
- * This class represents domain object "Role".
- * Role Domain defines the role for a user in this application.
- * 
- * @author RM
- * @since V1.0.0_01102017
- */
 @Entity
 @Table(name="role")
 public class Role {

@@ -1,4 +1,5 @@
 package com.student.corner.SC.config.jwt;
+
 import java.util.Collection;
 import java.util.Date;
 
@@ -7,12 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Created by stephan on 20.03.16.
- */
 public class JwtUser implements UserDetails {
-
-    private final Long id;
+	private static final long serialVersionUID = 1L;
+	private final Long id;
     private final String username;
     private final String firstname;
     private final String lastname;

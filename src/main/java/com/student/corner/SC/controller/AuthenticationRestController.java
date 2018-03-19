@@ -1,5 +1,8 @@
 package com.student.corner.SC.controller;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +30,12 @@ public class AuthenticationRestController {
 
     @Value("${jwt.header}")
     private String tokenHeader;
+    
+    @Value("${jwt.expiration}")
+    private int EXPIRES_IN;
+    
+    @Value("${jwt.cookie}")
+    private String AUTH_COOKIE;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -38,7 +47,7 @@ public class AuthenticationRestController {
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device, HttpServletResponse response) throws AuthenticationException {
 
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
@@ -52,9 +61,17 @@ public class AuthenticationRestController {
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails, device);
+        
+        // Create Cookie
+        Cookie authCookie = new Cookie(AUTH_COOKIE,(token) );
+        authCookie.setPath( "/" );
+        authCookie.setHttpOnly(true);
+        authCookie.setMaxAge(EXPIRES_IN);
+        // Add cookie to response
+        response.addCookie( authCookie );
 
         // Return the token
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(token, EXPIRES_IN));
     }
 
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
@@ -65,7 +82,7 @@ public class AuthenticationRestController {
 
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken, EXPIRES_IN));
         } else {
             return ResponseEntity.badRequest().body(null);
         }

@@ -1,4 +1,5 @@
 package com.student.corner.SC.service.impl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,6 @@ import com.student.corner.SC.service.UserService;
 import com.student.corner.SC.util.Constants.KeyType;
 import com.student.corner.SC.util.Utility;
 
-/**
- * 
- * @author Raj
- * @since V1.0.0_14012017
- */
 
 @Service("userService")
 public class UserServiceImpl implements UserService{

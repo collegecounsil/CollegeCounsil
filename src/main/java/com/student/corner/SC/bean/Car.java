@@ -1,13 +1,5 @@
 package com.student.corner.SC.bean;
 
-/**
- * For Testing 
- * 
- * @author Raj
- * @since V1.0.0_14012017
- */
-
-//[TODO] Remove It Later
 public class Car {
 	
 	private int id;

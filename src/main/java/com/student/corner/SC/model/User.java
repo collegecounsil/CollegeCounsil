@@ -1,4 +1,5 @@
 package com.student.corner.SC.model;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -17,12 +18,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-/**
- * User Domain represents a user for application.
- * 
- * @author Raj
- * @since V1.0.0_14012017
- */
 @Entity
 @Table(name="user_info")
 public class User {

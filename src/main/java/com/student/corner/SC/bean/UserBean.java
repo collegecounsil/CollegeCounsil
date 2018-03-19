@@ -4,7 +4,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
-
 public class UserBean {
 	
 	// Contains first name of the user

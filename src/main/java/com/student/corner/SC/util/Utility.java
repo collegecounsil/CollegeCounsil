@@ -9,12 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.student.corner.SC.util.Constants.KeyType;
 
-/**
- * Contains All Application utility 
- * 
- * @author Raj
- * @since V1.0.0_14012017
- */
 @Service("utility")
 public class Utility {
 	

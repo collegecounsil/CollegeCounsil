@@ -1,11 +1,5 @@
 package com.student.corner.SC.util;
 
-/**
- * Contains All Application Constants 
- * 
- * @author Raj
- * @since V1.0.0_14012017
- */
 public class Constants {
 	
 	private Constants() {
