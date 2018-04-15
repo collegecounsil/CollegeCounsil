@@ -3,6 +3,7 @@ package com.student.corner.SC.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,14 @@ public class Utility {
 	public static final String TIME_FORMAT_NOTIFICATION_TEXT = "hh:mm a";
 	public static final String DATE_FORMAT_NOTIFICATION_VOICE = "hh:mm a 'on' EEEE, MMMM, dd";
 	public static final String TIME_FORMAT = "HH:mm";
+	public static final String SEPARATOR = "~~~";
+	private static final String PASSWORD_PATTERN = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}";
+	private Pattern pattern;
+	
+	
+	public Utility() {
+		pattern = Pattern.compile(PASSWORD_PATTERN);
+	}
 	
 	// Return Date into String format
 	public static String dateToString() {
@@ -52,5 +61,8 @@ public class Utility {
 	public String genrateKey(KeyType key) {
 		return key.getValue() + "-" + UUID.randomUUID().toString();
 	}
-
+	
+	public Boolean matchPasswordPolicy(final String password) {
+		return pattern.matcher(password).matches();
+	}
 }
